@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation"; // Use useRouter from 'next/navigation' for Next.js 13
-import { useSearchParams } from "next/navigation"; // To read query params from the URL
+import { useRouter } from "next/navigation"; // Use useRouter from 'next/navigation' for Next.js 13 // To read query params from the URL
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify"; // For toast notifications
@@ -19,9 +18,15 @@ export default function UpdatePasswordPage() {
   const [isClient, setIsClient] = useState(false); // Add state to check if it's client-side
 
   const router = useRouter();
-  const searchParams = useSearchParams(); // This allows access to URL query params
-  const access_token = searchParams.get("access_token"); // Get access token from query params
-  const refresh_token = searchParams.get("refresh_token"); // Get refresh token from query params
+
+  const hash = window.location.hash;
+
+  // Parse parameters from the fragment (after #)
+  const queryParams = new URLSearchParams(hash.slice(1)); // Remove the "#" symbol
+  const access_token = queryParams.get("access_token");
+  const refresh_token = queryParams.get("refresh_token");
+
+  console.log(access_token, refresh_token);
 
   // Only run this effect on the client to avoid hydration issues
   useEffect(() => {
@@ -74,7 +79,6 @@ export default function UpdatePasswordPage() {
     onSubmit: async (values, { setSubmitting }) => {
       if (!isTokenValid) {
         toast.error("Invalid or expired reset token");
-        router.push("/forgot-password");
         return;
       }
 
@@ -88,7 +92,6 @@ export default function UpdatePasswordPage() {
         toast.success("Password updated successfully");
         setSubmitted(true);
         setTimeout(() => {
-          router.push("/signin");
         }, 2000);
       } catch (error) {
         toast.error("Failed to reset password, please try again.");
