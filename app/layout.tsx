@@ -1,12 +1,14 @@
-import './globals.css';
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import "./globals.css";
+import type { Metadata } from "next";
+import { Baloo_Tammudu_2 } from "next/font/google";
+import { ToastContainer } from "react-toastify";
 
-const inter = Inter({ subsets: ['latin'] });
+const baloo = Baloo_Tammudu_2({ subsets: ["latin"], weight: "700" });
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy - Zoopixie',
-  description: 'Privacy Policy for Zoopixie - Protecting children\'s privacy while they create amazing AI animations from their drawings.',
+  title: "Privacy Policy - Zoopixie",
+  description:
+    "Privacy Policy for Zoopixie - Protecting children's privacy while they create amazing AI animations from their drawings.",
 };
 
 export default function RootLayout({
@@ -16,7 +18,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={baloo.className}>
+        {children}
+        <ToastContainer />
+      </body>
     </html>
   );
 }
